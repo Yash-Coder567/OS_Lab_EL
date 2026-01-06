@@ -59,6 +59,24 @@ For kernel/VM labs, use qemu:
 qemu-system-x86_64 -kernel path/to/kernel.bin -nographic
 ```
 
+## Deployment (Vercel) ⚙️
+This project is a Next.js app and can be deployed to Vercel. Two simple steps:
+
+1. Create a Vercel Personal Token at https://vercel.com/account/tokens and add it to your repository secrets as `VERCEL_TOKEN`.
+2. (Optional) Add `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` to target a specific team/project.
+
+A GitHub Actions workflow is included at `.github/workflows/vercel-deploy.yml` which will build and deploy the app on pushes to `main`.
+
+If you prefer to deploy from your machine instead of using the workflow:
+
+```bash
+# install vercel CLI and deploy (you will be prompted to login/link or supply a token)
+npm i -g vercel
+vercel --prod --token $VERCEL_TOKEN --confirm
+```
+
+If you need a Docker-based deploy or a custom setup, open an issue or tell me your preference and I can add it.
+
 ## Labs (example)
 Each lab folder should include:
 - README.md (lab-specific instructions)

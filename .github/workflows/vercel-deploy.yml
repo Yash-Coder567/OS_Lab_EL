@@ -1,0 +1,50 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: '8'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }} # optional
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }} # optional
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "ERROR: VERCEL_TOKEN is not set in repository secrets. Create one at https://vercel.com/account/tokens and add it to your repo's Secrets as VERCEL_TOKEN.";
+            exit 1;
+          fi
+
+          # If you have VERCEL_ORG_ID and VERCEL_PROJECT_ID as secrets, the deploy will target the specified project.
+          CMD="npx vercel --prod --token $VERCEL_TOKEN --confirm"
+          if [ -n "$VERCEL_ORG_ID" ]; then
+            CMD="$CMD --scope $VERCEL_ORG_ID"
+          fi
+          if [ -n "$VERCEL_PROJECT_ID" ]; then
+            CMD="$CMD --project $VERCEL_PROJECT_ID"
+          fi
+          echo "Running: $CMD"
+          eval $CMD
