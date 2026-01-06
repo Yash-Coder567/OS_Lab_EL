@@ -86,7 +86,3 @@ This repository is provided under the MIT License — see LICENSE for details. I
 
 ## Contact
 Maintainer: @Yash-Coder567
-
----
-
-Note (in Hindi): Agar README mein koi specific details (jaise languages used, exact lab list, ya koi sample commands) add karwane hain to batao — main uske hisaab se README customize kar dunga.
